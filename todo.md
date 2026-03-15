@@ -1,0 +1,21 @@
+# Project TODO
+
+- [x] Database schema: Products table with barcode, price, weight, category, stock
+- [x] Database schema: Transactions table with payment method, kiosk tracking
+- [x] Database schema: TransactionItems table linking transactions to products
+- [x] Database schema: Kiosks table for multi-kiosk tracking
+- [x] Product management API: CRUD operations, barcode lookup, inventory updates
+- [x] Shopping cart API: add/remove/update items, real-time price calculation
+- [x] Transaction processing API: checkout flow, payment method support
+- [x] Admin Dashboard: DashboardLayout with sidebar navigation
+- [x] Admin Dashboard: Product management page (add/edit/delete products)
+- [x] Admin Dashboard: Inventory control page with stock levels
+- [x] Admin Dashboard: Sales reporting with charts and analytics
+- [x] Admin Dashboard: Transaction history and monitoring
+- [x] Self-checkout kiosk interface: touch-friendly fullscreen UI
+- [x] Self-checkout kiosk: barcode scanner input integration
+- [x] Self-checkout kiosk: cart display and checkout flow
+- [x] Receipt generation and print functionality
+- [x] Real-time transaction monitoring dashboard
+- [x] Clean retail-appropriate design theme
+- [x] Use KSh (Kenyan Shilling) as currency throughout all UI and receipts
