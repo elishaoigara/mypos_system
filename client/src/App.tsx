@@ -4,12 +4,12 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
-import Products from "./pages/Products";
-import Transactions from "./pages/Transactions";
-import Analytics from "./pages/Analytics";
-import Kiosks from "./pages/Kiosks";
-import KioskCheckout from "./pages/KioskCheckout";
+import Home from "@/pages/Home";
+import Products from "@/pages/Products";
+import Transactions from "@/pages/Transactions";
+import Analytics from "@/pages/Analytics";
+import Kiosks from "@/pages/Kiosks";
+import KioskCheckout from "@/pages/KioskCheckout";
 
 function Router() {
   return (

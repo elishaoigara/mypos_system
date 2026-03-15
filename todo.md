@@ -19,3 +19,10 @@
 - [x] Real-time transaction monitoring dashboard
 - [x] Clean retail-appropriate design theme
 - [x] Use KSh (Kenyan Shilling) as currency throughout all UI and receipts
+- [x] Local development setup guide (README.md with VS Code instructions)
+- [x] Environment variable template (docs/ENV_SETUP.md)
+- [x] Sample product seed data script for Kenyan supermarket products
+- [x] Hardware integration guide (barcode scanner, receipt printer, weighing scale)
+- [x] ESC/POS receipt printer utility for local hardware printing
+- [x] Barcode scanner integration hook for USB HID devices
+- [x] Deployment documentation (Manus hosting, local, VPS)
