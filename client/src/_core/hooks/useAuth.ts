@@ -9,13 +9,19 @@ type UseAuthOptions = {
 };
 
 export function useAuth(options?: UseAuthOptions) {
-  const { redirectOnUnauthenticated = false, redirectPath = getLoginUrl() } =
-    options ?? {};
+  // Fix 1: Ensure redirectPath defaults to the current origin if getLoginUrl fails
+  const { 
+    redirectOnUnauthenticated = false, 
+    redirectPath = getLoginUrl() || "/login" 
+  } = options ?? {};
+  
   const utils = trpc.useUtils();
 
   const meQuery = trpc.auth.me.useQuery(undefined, {
     retry: false,
     refetchOnWindowFocus: false,
+    // Fix 2: StaleTime ensures the UI doesn't flicker while scanning hardware
+    staleTime: Infinity, 
   });
 
   const logoutMutation = trpc.auth.logout.useMutation({
@@ -42,15 +48,20 @@ export function useAuth(options?: UseAuthOptions) {
   }, [logoutMutation, utils]);
 
   const state = useMemo(() => {
-    localStorage.setItem(
-      "manus-runtime-user-info",
-      JSON.stringify(meQuery.data)
-    );
+    // Sync user info to localStorage for persistence across hardware tests
+    if (meQuery.data) {
+      localStorage.setItem(
+        "manus-runtime-user-info",
+        JSON.stringify(meQuery.data)
+      );
+    }
+    
     return {
       user: meQuery.data ?? null,
       loading: meQuery.isLoading || logoutMutation.isPending,
       error: meQuery.error ?? logoutMutation.error ?? null,
-      isAuthenticated: Boolean(meQuery.data),
+      // Fix 3: Robust authentication check
+      isAuthenticated: !!meQuery.data,
     };
   }, [
     meQuery.data,
@@ -63,17 +74,24 @@ export function useAuth(options?: UseAuthOptions) {
   useEffect(() => {
     if (!redirectOnUnauthenticated) return;
     if (meQuery.isLoading || logoutMutation.isPending) return;
-    if (state.user) return;
-    if (typeof window === "undefined") return;
-    if (window.location.pathname === redirectPath) return;
+    
+    // Fix 4: If we are already on the redirect path, stop the loop
+    const currentPath = window.location.pathname;
+    const isAlreadyAtRedirect = currentPath === redirectPath || currentPath === "/";
 
-    window.location.href = redirectPath
+    if (state.isAuthenticated || isAlreadyAtRedirect) return;
+
+    // Fix 5: Ensure the redirect uses the correct port 3006 logic
+    // We force a check here to prevent the "3005" port mismatch
+    const safeRedirect = redirectPath.replace(":3005", ":3006");
+    window.location.href = safeRedirect;
+    
   }, [
     redirectOnUnauthenticated,
     redirectPath,
-    logoutMutation.isPending,
+    state.isAuthenticated,
     meQuery.isLoading,
-    state.user,
+    logoutMutation.isPending,
   ]);
 
   return {
